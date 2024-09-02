@@ -76,6 +76,59 @@ kubectl get nodes
 kubectl run pod1 --image nginx
 kubectl get pods
 kubectl events
-cd k8s-adm_Sep/
-history
-history | awk '$1 > 5' | cut -c 8- > day1-history.txt
+kubectl get nodes
+sudo vi /etc/apt/sources.list.d/kubernetes.list
+sudo -i apt-get update
+sudo -i
+kubectl get nodes
+kubectl drain k8s-master
+kubectl drain k8s-master --ignore-daemonsets
+kubectl get nodes
+apt-get install -y kubelet kubectl
+sudo apt-get install -y kubelet kubectl
+sudo systemctl daemon-reload
+sudo systemctl restart kubelet
+kubectl get nodes
+kubectl uncordon k8s-master
+kubectl get nodes
+kubectl drain worker01
+kubectl drain worker01 --ignore-daemonsets
+kubectl get nodes
+kubectl uncordon worker01
+kubectl drain worker02
+kubectl drain worker02 --ignore-daemonsets
+kubectl uncordon worker02
+kubectl get nodes
+vi /etc/kubernetes/manifests/etcd.yaml
+sudo vi /etc/kubernetes/manifests/etcd.yaml
+sudo apt-get install etcd-client
+sudo -i
+kubectl get nodes
+sudo vi /etc/kubernetes/manifests/etcd.yaml
+sudo ls -la /var/lib/etcd
+kubectl get pods
+kubectl get ns
+kubectl run pod1 --image nginx
+kubec get pods
+kubectl get pods
+kubectl  get nodes
+kubectl get pods
+sudo rm -rf /var/lib/etcd
+kubectl get nodes
+kubectl get pods
+sudo crictl ps
+kubectl get pods
+kubectl get nodes
+kubectl get pods
+kubectl get nodes
+sudo watch -n1 crictl ps
+kubectl get nodes
+kubectl get pods
+kubectl get nodes
+sudo -i
+kubectl get nodes
+sudo watch -n1 crictl ps
+kubectl get nodes
+kubectl get pods
+kubectl get nodes
+sudo watch -n1 crictl ps

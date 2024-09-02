@@ -1,0 +1,81 @@
+lsmod | grep -e overlay -e netfilter
+modprobe overlay 
+modprobe br_netfilter
+lsmod | grep -e overlay -e netfilter
+vi /etc/modules-load.d/kubernetes.conf
+sysctl -a | grep ip_forward
+sysctl -a | grep brifge-nf-call
+sysctl -a | grep bridge-nf-call
+vi /etc/sysctl.d/99-kubernetes.conf
+sysctl --system
+sysctl -a | grep ip_forward
+apt-get update
+apt-get install containerd -y
+systemctl status containerd.service 
+mkdir -p /etc/containerd
+containerd config default | tee /etc/containerd/config.toml
+vi /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/g' /etc/containerd/config.toml
+vi /etc/containerd/config.toml
+systemctl restart containerd.service 
+swapon -s
+swapoff -a
+swapon -s
+vi /etc/fstab 
+apt-get install apt-transport-https curl -y
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+vi /etc/apt/sources.list.d/kubernetes.list 
+apt-get install vim -y
+vi /etc/apt/sources.list.d/kubernetes.list 
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+apt-cache madison kubeadm 
+apt-get update
+apt-cache madison kubeadm 
+apt-get install -y kubeadm=1.30.2-1.1 kubelet=1.30.2-1.1 kubectl=1.30.2-1.1
+apt-mark hold kubelet kubectl kubeadm
+kubeadm init --help
+ip a
+kubeadm init --pod-network-cidr 172.16.0.0/16 
+export KUBECONFIG=/etc/kubernetes/admin.conf
+kubectl get nodes
+kubectl get pods -n kube-system
+CILIUM_CLI_VERSION=$(curl -s https://raw.githubusercontent.com/cilium/cilium-cli/main/stable.txt)
+CLI_ARCH=amd64
+if [ "$(uname -m)" = "aarch64" ]; then CLI_ARCH=arm64; fi
+curl -L --fail --remote-name-all https://github.com/cilium/cilium-cli/releases/download/${CILIUM_CLI_VERSION}/cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+sha256sum --check cilium-linux-${CLI_ARCH}.tar.gz.sha256sum
+sudo tar xzvfC cilium-linux-${CLI_ARCH}.tar.gz /usr/local/bin
+rm cilium-linux-${CLI_ARCH}.tar.gz{,.sha256sum}
+cilium install --version 1.16.1
+watch -n1 kubectl get pods -A
+kubectl get nodes
+ip a
+vi /etc/hosts
+kubeadm token create --print-join-command
+kubectl get nodes
+watch -n1 kubectl get pods -A
+kubectl get nodes
+watch -n1 kubectl get pods -A -o wide
+kubectl get nodes
+vi /etc/hosts
+kubectl get nodes
+kubectl get pods -A
+kubectl get pods -o wide -n kube-system
+kubectl get nodes
+ping worker01
+ping worker02
+kubectl get nodes
+vi /etc/hosts
+kubectl get nodes
+systemctl restart kubelet
+kubectl get nodes
+git clone https://github.com/mariano-italiano/k8s-adm_Sep.git
+apt-get install git -y
+git clone https://github.com/mariano-italiano/k8s-adm_Sep.git
+kubectl get nodes
+kubectl run pod1 --image nginx
+kubectl get pods
+kubectl events
+cd k8s-adm_Sep/
+history
+history | awk '$1 > 5' | cut -c 8- > day1-history.txt

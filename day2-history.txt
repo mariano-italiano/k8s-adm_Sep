@@ -150,3 +150,126 @@ history | awk '$1 > 133' | cut -c 8-
 hisotry
 history 
 history | awk '$1 > 334' | cut -c 8- > day2-history.txt 
+git status
+git add .
+git commit -m "Adding day 2 files"
+git push
+cd day2
+kubectl get pods 
+kubectl get pods  --show-
+kubectl get pods  --show-labels 
+vi my-replicaset.yaml
+kubectl apply -f my-replicaset.yaml
+vi my-replicaset.yaml
+kubectl apply -f my-replicaset.yaml
+vi my-replicaset.yaml
+kubectl apply -f my-replicaset.yaml
+kubectl get pods
+kubectl get pods  --show-labels 
+kubectl delete pod pod1
+kubectl get pods  --show-labels 
+kubectl delete pod my-replicaset-hprh4
+kubectl get pods  --show-labels 
+kubectl get rs
+kubectl scale rs my-replicaset --replicas 10
+kubectl get rs
+kubectl get pods  --show-labels 
+kubectl scale rs my-replicaset --replicas 1
+kubectl get pods  --show-labels 
+vi nginx-deployment.yaml
+kubectl apply -f nginx-deployment.yaml
+kubectl get deploy,rs,pod
+kubectl describe deployments.apps  nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+kubectl describe deployments.apps  nginx-deployment 
+kubectl scale deployment nginx-deployment --replicas 6
+kubectl edit deployments.apps nginx-deployment 
+kubectl set image deployment nginx-deployment nginx=nginx:1.16.1
+kubectl get pods
+kubectl rollout status deployment nginx-deployment 
+kubectl describe deployments.apps  nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl annotate deployment/nginx-deployment kubernetes.io/change-cause="update nginx image from 1.14.2 to 1.16.1, date: 03.09.2024, implementer: me, ch no: CH12345"
+kubectl rollout history deployment nginx-deployment 
+kubectl edit deployments.apps nginx-deployment 
+watch -n1 kubectl get pods
+kubectl rollout status deployment nginx-deployment 
+kubectl rollout history deployment nginx-deployment 
+kubectl rollout undo deployment nginx-deployment --to-revision 2
+watch -n1 kubectl get pods
+kubectl rollout history deployment nginx-deployment 
+kubectl set image deployment nginx-deployment nginx=nginx:1.19.1 --record
+kubectl rollout history deployment nginx-deployment 
+watch -n1 kubectl get pods
+kubectl scale  deployment nginx-deployment --replicas 12
+watch -n1 kubectl get pods
+kubectl rollout restart deployment nginx-deployment 
+kubectl scale  deployment nginx-deployment --replicas 2
+kubectl edit deployments.apps nginx-deployment 
+kubectl set image deployment nginx-deployment nginx=nginx:1.14.1
+watch -n1 kubectl get pods
+vi my-daemonset.yaml
+kubectl apply -f my-daemonset.yaml
+kubectl get ds
+kubectl get pod -o wide
+vi nginx-stfs.yaml
+kubectl apply -f nginx-stfs.yaml
+vi nginx-stfs.yaml
+kubectl get sts
+kubectl get sts,pod
+kubectl scale sts nginx-stfs --replicas 6
+watch -n1 kubectl get sts,pod
+kubectl scale sts nginx-stfs --replicas 1
+watch -n1 kubectl get sts,pod
+kubectl describe sts nginx-stfs 
+kubectl get deployments.apps 
+kubectl top pods
+wget https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml 
+vi components.yaml 
+kubectl apply -f components.yaml
+watch -n1 kubectl get pods -n kube-system 
+kubectl top pods
+kubectl top pods --containers 
+kubectl top nodes
+kubectl top pods --containers --sort-by cpu
+kubectl top pods --containers --sort-by memory
+kubectl top nodes
+vi hpa-deployment.yaml
+vi load-generator.yaml
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -o yaml --dry-run=client -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+kubectl run -i --tty load-generator --rm --image=busybox:1.28 --restart=Never -- /bin/sh -c "while sleep 0.01; do wget -q -O- http://php-apache; done"
+kubectl get pods
+kubectl get pod load-generator -o yaml
+kubectl delete pod load-generator 
+vi load-generator.yaml
+kubectl  get deployments.apps nginx-deployment 
+kubectl  get deployments.apps nginx-deployment  -o yaml
+vi load-generator.yaml
+kubectl apply -f hpa-deployment.yaml 
+kubectl autoscale deployment hpa-deployment --cpu-percent 60% --min 2 --max 10 
+kubectl autoscale deployment hpa-deployment --cpu-percent 60 --min 2 --max 10 
+kubectl get hpa
+kubectl get pods
+kubectl get hpa
+kubectl apply -f load-generator.yaml 
+kubectl get hpa
+watch -n1 kubectl get hpa
+watch -n1 kubectl get pods
+kubectl get hpa
+watch -n1 kubectl get pods
+kubectl get hpa
+watch -n1 kubectl get pods
+kubectl get hpa
+watch -n1 kubectl get pods
+kubectl get hpa
+kubectl top pods --containers 
+kubectl scale deployment load-generator --replicas=3
+kubectl get hpa
+watch -n1 kubectl get hpa
+watch -n1 kubectl get pods
+watch -n1 kubectl get hpa
+kubectl delete deployments.apps load-generator 
+watch -n1 kubectl get hpa
+kubectl top pods --containers 
+watch -n1 kubectl get pods
+history | awk '$1 > 334' | cut -c 8- > ../day2-history.txt 

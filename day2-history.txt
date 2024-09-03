@@ -1,0 +1,152 @@
+vi pod.yaml
+kubectl apply -f pod.yaml
+kubectl run pod1 --image nginx --labels app=web 
+kubectl run pod1 --image nginx --labels app=web -o yam --dry-run=client
+kubectl run pod1 --image nginx --labels app=web -o yaml --dry-run=client
+kubectl run pod1 --image nginx --labels app=web -o yaml --dry-run=client > pod1.yaml
+vi pod1.yaml 
+kubectl apply -f pod1.yaml
+kubectl describe pod pod1
+kubectl edit pod pod1
+kubectl describe pod pod1
+kubectl edit pod pod1
+kubectl describe pod pod1
+kubectl edit pod pod1
+kubectl describe pod pod1
+kubectl edit pod pod1
+kubectl api-resources 
+kubectl delete pod1
+kubectl delete pod pod1
+kubectl get pods
+kubectl get pods -o wide
+kubectl exec --help
+kubectl exec -it pod -- bash
+kubectl get pods 
+kubectl get pods --v=7
+kubectl get pods --v=10
+kubectl apply -f pod1.yaml --v=7
+kubectl logs pod1
+kubectl get pods --show-labels 
+kubectl get pods --selector app
+kubectl get pods --selector app=web
+kubectl get pods --selector app=app
+vi ~/.kube/config 
+grep certificate-authority-data ~/.kube/config 
+grep certificate-authority-data ~/.kube/config | cut -d " " -f 6
+grep certificate-authority-data ~/.kube/config | cut -d " " -f 6 
+grep certificate-authority-data ~/.kube/config | cut -d " " -f 6 | base64 -d - > ca.pem
+cat ca.pem 
+grep client-cert ~/.kube/config | cut -d " " -f 6 | base64 -d - > client.pem
+cat client.pem
+grep client-key ~/.kube/config | cut -d " " -f 6 | base64 -d - > client.key
+cat client.key
+curl --cert client.pem --key client.key --cacert ca.pem https://172.16.1.133:6443/api/v1/nodes
+curl --cert client.pem --key client.key --cacert ca.pem https://172.16.1.133:6443/api/v1/nodes | jq -r '.items[].metadata.name'
+sudo apt  install jq
+curl --cert client.pem --key client.key --cacert ca.pem https://172.16.1.133:6443/api/v1/nodes | jq -r '.items[].metadata.name'
+openssl genrsa -out devops.key
+openssl req -new -key devops.key -out devops.csr -subj "/CN=devops"
+cat devops.csr 
+cat devops.csr | base64 | tr -d '\n'
+vi user-request-devops.yaml
+kubectl apply -f user-request-devops.yaml
+kubectl get csr
+kubectl certificate approve user-request-devops
+kubectl get csr
+kubectl get csr user-request-devops -o yaml
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}'
+kubectl get csr user-request-devops -o jsonpath='{.status.certificate}' | base64 -d > devops.crt
+cat devops.crt
+kubectl --kubeconfig devops-config config set-cluster dev --server=https://172.16.1.133:6443 --insecure-skip-tls-verify true
+kubectl --kubeconfig devops-config config set-cluster dev --server=https://172.16.1.133:6443 --insecure-skip-tls-verify=true
+vi devops-config 
+kubectl --kubeconfig devops-config config set-credentials  devops --client-certificate devops.crt --client-key devops.key --embed-certs=true
+vi devops-config 
+kubectl --kubeconfig devops-config config set-context default --cluster dev --user devops
+vi devops-config 
+kubectl create ns app1
+kubectl create -n app1 role devops-role --help
+kubectl create -n app1 role devops-role --verb=get,list,watch --resource=pods,configmaps
+kubectl create -n app1 rolebinding deveop-rolebinding --help
+kubectl create -n app1 rolebinding deveop-rolebinding --role devops-role --user=devops
+sudo useradd -m -s /bin/bash devops
+sudo -i
+kubectl edit -n app1 role devops-role
+sudo -i
+kubectl get clusterrole
+kubectl describe clusterrole view
+kubectl describe clusterrole edit
+kubectl --kubeconfig devops-config config use-context default
+cat devops-config 
+sudo -i
+vi sidecar-pod.yaml
+kubectl apply -f sidecar-pod.yaml
+kubectl get pods
+kubectl logs sidecar-pod 
+kubectl logs sidecar-pod -c busybox1
+kubectl logs sidecar-pod -c sidecar
+kubectl logs sidecar-pod --all-containers 
+kubectl exec -it sidecar-pod -- sh
+kubectl exec -it sidecar-pod -c sidecar -- sh
+vi init-pod.yaml
+kubectl apply -f init-pod.yaml 
+watch -n1 kubectl get pods
+vi init-container-pod.yaml
+kubectl apply -f init-container-pod.yaml
+kubectl get pods
+kubectl get pods -o wide
+ping worker1
+ping worker01
+ssh student@172.16.1.134
+kubectl get pods
+kubectl delete pod static-pod-worker01
+kubectl get pods
+ssh student@172.16.1.134
+kubectl get pods
+kubectl edit pod pod
+kubectl describe pod pod
+kubectl describe  nodes  worker01
+kubectl edit pod pod
+kubectl describe pod pod
+kubectl get pods
+vi pod1.yaml 
+kubectl expose pod pod1 --name clusterip-svc --port 80
+kubectl get svc
+kubectl get svc,ep,pod
+kubectl get svc,ep,pod -o wide
+kubectl expose pod pod1 --type NodePort --name nodeport-svc --port 80
+kubectl get svc,ep,pod -o wide
+ip a s
+ping worker01
+kubectl expose pod pod1 --type LoadBalancer --name lv-svc --port 80
+kubectl get svc
+kubectl edit svc lv-svc 
+kubectl delete svc lv-svc 
+kubectl expose pod pod1 --type LoadBalancer --name lb-svc --port 80
+kubectl get svc
+kubectl edit svc lb-svc 
+kubectl get svc
+kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.14.5/config/manifests/metallb-native.yaml
+watch -n1 kubectl get all -n metallb-system
+vi initial-pool.yaml
+kubectl apply -f initial-pool.yaml
+kubectl describe ipaddresspools.metallb.io initial-pool -n metallb-system 
+kubectl get svc
+kubectl expose pod1 --type LoadBalancer --port 80 --name lb-svc2
+kubectl expose pod pod1 --type LoadBalancer --port 80 --name lb-svc2
+kubectl get svc
+vi test-dns.yaml
+kubectl apply -f test-dns.yaml 
+kubectl delete -f test-dns.yaml
+kubectl apply -f test-dns.yaml -n app1
+kubectl -n app1 exec -it test-dns -- bash
+kubectl -n app1 exec -it test-dns -- sh
+kubectl apply -f test-dns.yaml 
+kubectl exec -it test-dns -- sh
+git config --global credential.helper store
+git status
+cd ..
+history | awk '$1 > 133' | cut -c 8-
+hisotry
+history 
+history | awk '$1 > 334' | cut -c 8- > day2-history.txt 

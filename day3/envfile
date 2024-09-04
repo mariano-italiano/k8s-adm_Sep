@@ -1,0 +1,6 @@
+version=5.1
+os=linux
+type=ssd
+# specify optional vars here
+opt1=cos
+opt2=cos wiecej

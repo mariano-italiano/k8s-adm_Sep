@@ -1,0 +1,272 @@
+kubectl get podes
+kubectl get pods
+kubectl delete all --all
+kubectl get cm
+kubectl get secrets 
+kubectl get pods
+cd k8s-adm_Sep/
+mkdir day4
+cd day4
+ls -la
+vi nodename-pod.yaml
+kubectl aply -f nodename-pod.yaml
+kubectl apply -f nodename-pod.yaml
+kubectl get pods -o wide
+vi nodename-pod.yaml 
+kubectl replace -f nodename-pod.yaml
+kubectl delete pod nginx 
+kubectl apply -f nodename-pod.yaml
+kubectl replace -f nodename-pod.yaml
+q
+kubectl replace --force -f nodename-pod.yaml
+kubectl get pods -o wide
+kubectl run pod1 --image nginx 
+kubectl get pods -o wide
+kubectl  delete pod pod1
+cp nodename-pod.yaml nodeselector-pod.yaml
+vi nodeselector-pod.yaml
+kubectl apply -f nodeselector-pod.yaml
+kubectl  delete pod pod1
+kubectl get pods -o wide
+kubectl label nodes worker01 kubernetes.io/env=dev
+kubectl get pods -o wide
+kubectl events
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl taint node worker02 kubernetes.io/env=prod:NoSchedule
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl run test-pod --image nginx
+kubectl get pods -o wide
+kubectl run test-pod2 --image nginx
+kubectl get pods -o wide
+cp -rp nodename-pod.yaml taint-pod.yaml
+vi taint-pod.yaml
+kubectl apply -f taint-pod.yaml
+kubectl get pods -o wide
+kubectl taint node worker01 kubernetes.io/zone=secure:NoExecute
+kubectl get pods -o wide
+kubectl taint node worker01 kubernetes.io/zone-
+kubectl apply -f nodename-pod.yaml -f nodeselector-pod.yaml 
+kubectl run test-pod2 --image nginx
+kubectl run test-pod1 --image nginx
+kubectl get pods -o wide
+kubectl create deploy test-deploy --image nginx --replicas 3
+kubectl get pods -o wide
+kubectl edit pod test-pod2
+kubectl taint node worker01 kubernetes.io/zone=secure:NoExecute
+kubectl get pods -o wide
+watch -n1 kubectl get pods -o wide
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl edit deployments.apps test-deploy 
+watch -n1 kubectl get pods -o wide
+kubectl taint node worker01 kubernetes.io/zone-
+kubectl taint node worker02 kubernetes.io/env-
+kubectl get nodes -o json | jq -r '.items[] | "Node name: \(.metadata.name), Taints: \(.spec.taints[0])"'
+kubectl get pods
+kubectl get pods -o wide
+kubectl get node --show-labels 
+kubectl get nodes --show-labels 
+kubectl label nodes worker01 kubernetes.io/country=poland
+kubectl label nodes worker02 kubernetes.io/country=france
+vi with-node-affinity.yaml
+kubectl apply -f with-node-affinity.yaml
+kubectl get pods -o wide
+vi with-pod-affinity.yaml
+kubectl get pod --show-labels 
+kubectl edit pod with-node-affinity
+kubectl get pod --show-labels 
+vi with-pod-affinity.yaml
+kubectl get pods -o wide
+kubectl apply -f with-pod-affinity.yaml
+kubectl get pods -o wide
+cp -rp with-pod-affinity.yaml with-pod-antiaffinity.yaml
+vi with-pod-antiaffinity.yaml
+kubectl apply -f with-pod-antiaffinity.yaml
+kubectl get pods -o wide
+kubectl create ns np-test
+kubectl describe ns np-test 
+kubectl run np-nginx --image nginx --label app=nginx -n np-test
+kubectl run np-nginx --image nginx --labels app=nginx -n np-test
+kubectl get pods -n np-test 
+kubectl -n np-test get pods
+kubectl run np-nginx2 --image nginx --labels app=nginx app=web -n np-test
+kubectl describe pod -n np-test np-nginx2
+kubectl run np-nginx3 --image nginx --labels app=nginx env=dev -n np-test
+kubectl describe pod -n np-test np-nginx3
+kubectl run np-nginx4 --image nginx --labels app=nginx,env=dev -n np-test
+kubectl describe pod -n np-test np-nginx3
+kubectl describe pod -n np-test np-nginx4
+kubectl run np-nginx5 --image nginx --labels app=nginx,app=dev -n np-test
+kubectl describe pod -n np-test np-nginx5
+kubectl  get pods -n np-test 
+kubec delete pod -n np-test np-nginx2 np-nginx3 np-nginx4
+kubectl delete pod -n np-test np-nginx2 np-nginx3 np-nginx4
+kubectl delete pod -n np-test np-nginx5
+kubectl  get pods -n np-test 
+vi np-busybox.yaml
+kubectl apply -f np-busybox.yaml -n np-test
+kubectl  get pods -n np-test 
+kubectl  get pods -n np-test -o wide
+kubectl -n np-test exec -it np-busybox -- bash
+kubectl -n np-test exec -it np-busybox -- sh
+vi my-networkpolicy.yaml
+kubectl apply -f my-networkpolicy.yaml
+kubectl describe -n np-test networkpolicies.networking.k8s.io my-networkpolicy 
+kubectl get pod -n np-test 
+kubectl get pod -n np-test  --show-labels 
+kubectl -n np-test exec -it np-busybox -- bash
+kubectl -n np-test exec -it np-busybox -- sh
+kubectl edit -n np-test networkpolicies.networking.k8s.io my-networkpolicy 
+kubectl -n np-test exec -it np-busybox -- sh
+kubectl edit -n np-test networkpolicies.networking.k8s.io my-networkpolicy 
+kubectl get pods -w
+kubectl get pod taint-pod 
+kubectl events
+kubectl get events -n np-test
+kubectl get events --all-namespaces --sort-by .metadata.creationTimestamp
+kubectl events --types=Warning
+kubectl get events -A --types=Warning
+sudo journalctl -u kubelet
+sudo journalctl -u kubelet -p err
+sudo journalctl -u containerd -p err
+sudo systemctl status kubelet
+vi /etc/systemd/system/kubelet.service.d/10-kubeadm.conf 
+which kubelet
+sudo systemctl status kube
+sudo systemctl status kubelet
+sudo systemctl enable --now kubelet
+sudo -i
+kubectl top nods
+kubectl top nodes
+kubectl top pods
+kubectl top pods --containers 
+kubectl top pods --containers --sort-by memory
+kubectl run my-pod --image=registry.k8s.io/pause:3.1
+kubectl get pod
+kubectl exec -it my-pod -- sh
+kubectl exec -it my-pod -- bash
+kubectl exec -it my-pod -- zsh
+kubectl debug -it my-pod --image=nicolaka/netshoot --target=my-pod
+vi nginx-badpod.yaml
+kubectl apply -f nginx-badpod.yaml
+kubectl get pods
+vi security-context-demo.yaml
+kubectl apply -f security-context-demo.yaml
+kubectl exec -it security-context-demo -- sh
+cp security-context-demo.yaml security-context-demo2.yaml 
+vi security-context-demo2.yaml
+kubectl apply -f security-context-demo2.yaml
+vi security-context-demo2.yaml
+kubectl apply -f security-context-demo2.yaml
+kubectl exec -it security-context-demo2 -- sh
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+watch -n1 kubectl get all -n kubernetes-dashboard
+kubectl get ingressclasses.networking.k8s.io 
+kubectl get ingress
+cp -rp ../day3/ingress.yaml dashboard-ingress.yaml
+vi dashboard-ingress.yaml
+kubectl get svc -n kubernetes-dashboard 
+vi dashboard-ingress.yaml
+kubectl apply -f dashboard-ingress.yaml
+kubectl get role -n kubernetes-dashboard 
+kubectl describe role kubernetes-dashboard -n kubernetes-dashboard 
+kubectl create sa kubernetes-admin -n kubernetes-dashboard 
+kubectl create clusterrolebinding kubernetes-admin-binding --help
+kubectl create clusterrolebinding kubernetes-admin-binding --clusterrole=cluster-admin  --serviceaccount=kubernetes-dashboard:kubernetes-admin
+kubectl -n kubernetes-dashboard create token kubernetes-admin 
+kubectl get deployments.apps,pod -n app1
+kubectl describe deployments.apps -n app1 test-nginx-deploy 
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh 
+./get_helm.sh 
+helm -v
+helm version
+helm repo add bitnami https://charts.bitnami.com/bitnami 
+helm search repo bitnami/wordpress
+helm install bitnami/wordpress --generate-name
+curl http://wordpress-1725540390.default.svc.cluster.local
+kubectl get svc
+curl http://10.109.180.68
+curl https://10.109.180.68:443
+kubectl get secret --namespace default wordpress-1725540390 -o jsonpath="{.data.wordpress-password}" | base64 -d
+kubectl get all 
+kubectl get events
+kubectl get pv
+kubectl edit pvc wordpress-1725540390
+helm list
+helm install bitnami/nginx helm-nginx
+helm install bitnami/nginx -n helm-nginx
+helm install bitnami/nginx -name helm-nginx
+helm install bitnami/nginx --name helm-nginx
+helm install bitnami/nginx --help
+helm install nginx-chart bitnami/nginx 
+kubectl get svc
+curl http://10.102.6.88
+curl http://localhost:32555
+kubectl events
+kubectl get pods
+kubectl get pods -o wide
+curl http://10.0.2.96
+kubectl delete networkpolicies.networking.k8s.io 
+kubectl get networkpolicies.networking.k8s.io 
+kubectl delete networkpolicies.networking.k8s.io nginx-chart 
+kubectl delete networkpolicies.networking.k8s.io wordpress-1725540390
+kubectl delete networkpolicies.networking.k8s.io wordpress-1725540390-mariadb 
+kubectl delete networkpolicies.networking.k8s.io wordpress-1725540390-mariadb -n np-test my-networkpolicy 
+kubectl get networkpolicies.networking.k8s.io -A
+helm create myhelmchart
+ls -la
+cd myhelmchart
+ls -la
+tree
+sudo apt  install tree -y
+tree
+vi Chart.yaml 
+vi values.yaml 
+vi templates/service.yaml 
+vi values.yaml 
+vi templates/service.yaml 
+vi templates/deployment.yaml 
+vi templates/service.yaml 
+vi templates/deployment.yaml 
+vi templates/service.yaml 
+vi values.yaml 
+vi templates/service.yaml 
+vi templates/deployment.yaml 
+rm templates/serviceaccount.yaml 
+rm templates/ingress.yaml 
+rm templates/hpa.yaml 
+tree
+vi /tmp/index.html
+kubectl create configmap nginx-index-html-configmap --from-file /tmp/index.html 
+kubectl get cm nginx-index-html-configmap -o yaml > templates/configmap.yaml
+vi templates/configmap.yaml
+vi templates/deployment.yaml 
+helm lint ../myhelmchart/
+vi templates/NOTES.txt
+helm lint ../myhelmchart/
+helm package myhelmchart --version 0.1
+cd .. ; helm package myhelmchart --version 0.1
+helm install myhelmchart-0.1.tgz  --generate-name 
+kubectl delete cm nginx-index-html-configmap 
+helm list --all
+helm uninstall nginx-chart
+helm uninstall wordpress-1725540390
+helm list --all
+helm install myhelmchart-0.1.tgz  --generate-name 
+helm list
+kubectl get svc
+helm show values myhelmchart-0.1.tgz 
+kubectl get deployments.apps 
+kubectl get deployments.apps,pods -o wide
+helm show values myhelmchart-0.1.tgz > my-values.yaml
+vi my-values.yaml
+helm install new-nginx myhelmchart-0.1.tgz --values my-values.yaml 
+helm list
+helm uninstall myhelmchart-0-1725542069
+kubectl get cm
+helm install new-nginx myhelmchart-0.1.tgz --values my-values.yaml 
+kubectl get deployments.apps 
+kubectl get pods -o wide
+cd ..
+history
+history  | awk '$1 > 844' | cut -c 8- > day4-history.txt

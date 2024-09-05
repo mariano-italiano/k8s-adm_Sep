@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: taint-pod
+spec:
+  tolerations:
+    - key: "kubernetes.io/env"
+      operator: "Equal"
+      value: "prod"
+      effect: "NoSchedule"
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+
